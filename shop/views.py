@@ -2,6 +2,25 @@ from django.shortcuts import render, get_object_or_404
 from .models import category, subcategory, item
 
 
+def sort(request):
+	val = request.POST.get('select')
+	if val == '1':
+		return 'price_rub'
+	else:
+		return '-price_rub'
+
+
+def order_view(request):
+	sort1 = sort(request)
+	item_list = item.objects.order_by(sort1)
+	all_categories = category.objects.all()
+	content = {
+		'item_list': item_list,
+		'all_categories': all_categories
+	}
+	return render(request, 'catalog.html', content)
+
+
 def category_view(request, category_slug):
 	get_object_or_404(category, slug=category_slug)
 	sort1 = sort(request)
@@ -22,6 +41,7 @@ def category_view(request, category_slug):
 	}
 
 	return render(request, 'category_filter.html', content)
+
 
 def subcategory_view(request, category_slug, subcategory_slug):
 	sort1 = sort(request)
@@ -55,22 +75,3 @@ def item_view(request, category_slug, subcategory_slug, item_slug):
 		'item_slug': item_slug
 	}
 	return render(request, 'catalog-item.html', content)
-
-
-def order_view(request):
-	sort1 = sort(request)
-	item_list = item.objects.order_by(sort1)
-	all_categories = category.objects.all()
-	content = {
-		'item_list': item_list,
-		'all_categories': all_categories
-	}
-	return render(request, 'catalog.html', content)
-
-
-def sort(request):
-	val = request.POST.get('select')
-	if val == '1':
-		return 'price_rub'
-	else:
-		return '-price_rub'
