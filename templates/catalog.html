@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+												{% for item in item_list %}
+
+												<div class="catalog-list__col">
+													<div class="c-card c-card--model">
+														<a class="c-card__img-wrap" href="catalog-item.html">
+															<div class="c-card__img-ratio">
+																<picture>
+																	<source media="(min-width: 2560px)" srcset="img/product-card-img-01--xxl.jpg 1x, img/product-card-img-01--xxl@2x.jpg 2x">
+																	<img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" srcset="img/product-card-img-01--xs@2x.jpg 2x" width="728" height="546" alt="">
+																</picture>
+															</div>
+														</a>
+														<div class="c-card__content">
+															<h3 class="c-card__title">
+																<a class="c-card__title-link" href="catalog-item.html">{{ item.title }}</a>
+															</h3>
+															<div class="c-card__footer">
+																<div class="price price--c-card">
+																	<div class="price__value price__value--old">2&nbsp;700<span class="price__unit">&nbsp;₽</span></div>
+																	<div class="price__value">{{ item.price_rub }}<span class="price__unit">&nbsp;₽</span></div>
+																</div>
+																<div class="c-card__buttons">
+																	<!--todo: Если товар в сравнении, добавляем класс-модификатор btn-count--active у кнопки -->
+																	<button class="btn-count btn-count--short btn-count--card" type="button">
+																		<div class="btn-count__icon-wrap">
+																			<svg class="btn-count__icon" viewBox="0 0 32 25" width="32" height="25">
+																				<use xlink:href="img/sprite.svg#icon-compare"></use>
+																			</svg>
+																		</div>
+																		<span class="btn-count__title">Сравнить</span>
+																	</button>
+																	<!--todo: Если товар в корзине, добавляем класс-модификатор btn-count--active у кнопки -->
+																	<button class="btn-count btn-count--buy btn-count--card btn-count--active" type="button">
+																		<div class="btn-count__icon-wrap">
+																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
+																				<use xlink:href="img/sprite.svg#icon-btn-cart"></use>
+																			</svg>
+																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
+																				<use xlink:href="img/sprite.svg#icon-btn-cart-check"></use>
+																			</svg>
+																		</div>
+																		<span class="btn-count__title">В корзине</span>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												{% endfor %}
+
+{% endblock %}
