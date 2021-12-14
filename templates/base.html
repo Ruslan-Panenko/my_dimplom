@@ -351,9 +351,15 @@
 												</div>
 												<div class="tabs__list">
 													<ul class="tabs-list c-filter__tabs-list">
-														{% for category in category_list %}
+
+														{% for category in all_categories %}
 														<a href="../../{{ category.slug }}">
-															 <li class="tabs-list__item js-tabs-trigger" data-tab="tab-1">{{ category.title }}</li></a>
+														{% if category.title == current_category.title %}
+															<li class="tabs-list__item js-tabs-trigger tabs-list__item--active" data-tab="tab-1">{{ category.title }}</li></a>
+														{% else%}
+														<li class="tabs-list__item js-tabs-trigger" data-tab="tab-1">{{ category.title }}</li></a>
+
+														{% endif %}
 														{% endfor %}
 
 													</ul>
@@ -364,11 +370,15 @@
 									<div class="c-filter__row">
 										<div class="c-filter__types">
 											<ul class="filter-list">
-												<li class="filter-list__item filter-list__item--active">Все</li>
-												<li class="filter-list__item">На стену</li>
-												<li class="filter-list__item">На стол</li>
-												<li class="filter-list__item">На пол</li>
-												<li class="filter-list__item">Маски</li>
+												{% for i in current_subcategories %}
+
+												{% if i.title == current_subcategory.title %}
+													<li class="filter-list__item filter-list__item--active" style="color: blue"><a href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
+												{% else %}
+													<li class="filter-list__item"><a href="/{{ i.category.slug }}/{{ i.slug }}" style="color: black">{{ i.title }}</a></li>
+												{% endif %}
+												{% endfor %}
+
 											</ul>
 										</div>
 										<div class="c-filter__price">
@@ -385,7 +395,6 @@
 									<div class="tabs-content c-filter__tabs-content tabs-content--active" data-tab-content="tab-1">
 										<div class="catalog-list">
 											<div class="catalog-list__row">
-
 
 
 

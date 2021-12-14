@@ -2,48 +2,47 @@ from django.shortcuts import render, get_object_or_404
 from .models import category, subcategory, item
 
 
-#def category_view(request, category_slug):
-#	sort1 = sort(request)
-#	item_list = item.objects.filter().order_by(sort1)
-#	content = {
-#		'item_list': item_list,
-#		'category_slug': category_slug
-#	}
-#	return render(request, 'category_filter.html', content)
-
-
 def category_view(request, category_slug):
-	sort1 = sort(request)
-	item_list = item.objects.order_by(sort1)
-	category_list = category.objects.all()
 	get_object_or_404(category, slug=category_slug)
+	sort1 = sort(request)
+	current_category = category.objects.filter(slug=category_slug).first()
+	all_categories = category.objects.all()
+	current_subcategories = subcategory.objects.filter(category=current_category)
+	items = []
+	for current_subcategory in current_subcategories:
+		for item_object in item.objects.filter(category=current_subcategory).order_by(sort1):
+			items.append(item_object)
+
 	content = {
-		'category_slug': category_slug,
-		'item_list': item_list,
-		'category_list': category_list
+		'current_category': current_category,
+		'all_categories': all_categories,
+		'current_subcategories': current_subcategories,
+		'items': items,
+
 	}
+
 	return render(request, 'category_filter.html', content)
-
-
-# def subcategory_view(request, category_slug, subcategory_slug):
-#	subcategory_list = item.objects.filter()
-#	content = {
-#		'subcategory_list': subcategory_list,
-#	}
-#	return render(request, 'subcategory_filter.html', content)
-
 
 def subcategory_view(request, category_slug, subcategory_slug):
 	sort1 = sort(request)
-	item_list = item.objects.order_by(sort1)
-	category_list = category.objects.all()
-	get_object_or_404(category, slug=subcategory_slug)
+	get_object_or_404(subcategory, slug=subcategory_slug)
+	current_category = category.objects.filter(slug=category_slug).first()
+	current_subcategory = subcategory.objects.filter(slug=subcategory_slug).first()
+	all_categories = category.objects.all()
+	current_subcategories = subcategory.objects.filter(category=current_category)
+	items = []
+	for item_object in item.objects.filter(category=current_subcategory).order_by(sort1):
+		items.append(item_object)
+
 	content = {
-		'subcategory_slug': subcategory_slug,
-		'category_slug': category_slug,
-		'item_list': item_list,
-		'category_list': category_list,
+		'current_subcategories': current_subcategories,
+		'all_categories': all_categories,
+		'current_category': current_category,
+		'current_subcategory': current_subcategory,
+		'items': items,
+
 	}
+
 	return render(request, 'subcategory_filter.html', content)
 
 
@@ -61,12 +60,12 @@ def item_view(request, category_slug, subcategory_slug, item_slug):
 def order_view(request):
 	sort1 = sort(request)
 	item_list = item.objects.order_by(sort1)
-	category_list = category.objects.all()
-	subcategory_list = subcategory.objects.all()
-	return render(request, 'catalog.html', {'item_list': item_list,
-											'category_list': category_list,
-											'subcategory_list': subcategory_list,
-											})
+	all_categories = category.objects.all()
+	content = {
+		'item_list': item_list,
+		'all_categories': all_categories
+	}
+	return render(request, 'catalog.html', content)
 
 
 def sort(request):
@@ -75,4 +74,3 @@ def sort(request):
 		return 'price_rub'
 	else:
 		return '-price_rub'
-

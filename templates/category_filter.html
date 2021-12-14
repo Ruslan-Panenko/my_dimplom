@@ -3,9 +3,7 @@
 {% block content %}
 
 
-												{% for item in item_list %}
-												{% if item.category.category.slug == category_slug %}
-
+												{% for item in items %}
 												<div class="catalog-list__col">
 													<div class="c-card c-card--model">
 														<a class="c-card__img-wrap" href="catalog-item.html">
@@ -52,7 +50,7 @@
 														</div>
 													</div>
 												</div>
-												{% endif %}
+
 												{% endfor %}
 
 {% endblock %}
