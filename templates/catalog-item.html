@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block filter %}
+{% block content %}
+{% for i in current_item %}
 			<main class="page__main">
 				<div class="breadcrumbs">
 					<div class="breadcrumbs__container">
@@ -7,10 +8,10 @@
 							<div class="breadcrumbs__col">
 								<ul class="breadcrumbs-list">
 									<li class="breadcrumbs-list__item">
-										<a class="breadcrumbs-list__link" href="catalog.html">Магазин</a>
+										<a class="breadcrumbs-list__link" href="/{{ category_slug }}">{{ i.category.category.title }}</a>
 									</li>
 									<li class="breadcrumbs-list__item">
-										<a class="breadcrumbs-list__link">Чертежи для бумаги</a>
+										<a class="breadcrumbs-list__link" href="/{{ category_slug }}/{{ subcategory_slug }}">{{ i.category.title }}</a>
 									</li>
 								</ul>
 							</div>
@@ -21,7 +22,7 @@
 					<div class="section__container">
 						<div class="section__row">
 							<div class="section__header">
-								<h1 class="main-title">Схема для печати головы лисы в&nbsp;формате PDF</h1>
+								<h1 class="main-title">{{ i.title }}</h1>
 							</div>
 						</div>
 					</div>
@@ -33,11 +34,11 @@
 										<div class="g-slider swiper-container js-g-slider">
 											<div class="g-slider__wrapper swiper-wrapper">
 												<div class="g-slider__item swiper-slide">
-													<a class="g-slider__img-wrap" href="img/product-original-img.jpg" data-fancybox="gallery">
+													<a class="g-slider__img-wrap" href="{{ i.main_photo_xxl2.url }}" data-fancybox="gallery">
 														<div class="g-slider__img-ratio">
 															<picture>
 																<source media="(min-width: 2560px)" srcset="img/product-card-img--big-01--xxl.jpg 1x, img/product-card-img--big-01--xxl@2x.jpg 2x">
-																<img class="g-slider__img" src="img/product-card-img--big-01--xs.jpg" srcset="img/product-card-img--big-01--xs@2x.jpg 2x" width="768" height="576" alt="">
+																<img class="g-slider__img" src="{{ i.main_photo_xxl2.url }}" srcset="img/product-card-img--big-01--xs@2x.jpg 2x" width="768" height="576" alt="">
 															</picture>
 														</div>
 													</a>
@@ -171,15 +172,15 @@
 										<ul class="prop-list">
 											<li class="prop-list__item">
 												<div class="prop-list__prop">Размер фигуры</div>
-												<div class="prop-list__value">40&times;25&times;21&nbsp;см</div>
+												<div class="prop-list__value">{{i.length}}&times{{i.width}}&times{{i.height}} см</div>
 											</li>
 											<li class="prop-list__item">
 												<div class="prop-list__prop">Цвет</div>
-												<div class="prop-list__value">Оранжевый, белый</div>
+												<div class="prop-list__value">{{ i.color }}</div>
 											</li>
 											<li class="prop-list__item">
 												<div class="prop-list__prop">Сложность</div>
-												<div class="prop-list__value">Средняя</div>
+												<div class="prop-list__value">{{ i.difficulty }}</div>
 											</li>
 										</ul>
 									</div>
@@ -220,8 +221,8 @@
 									<div class="catalog-item__purchase">
 										<div class="catalog-item__price">
 											<div class="price price--catalog-item">
-												<div class="price__value price__value--old">2&nbsp;100<span class="price__unit">&nbsp;₽</span></div>
-												<div class="price__value">1&nbsp;100<span class="price__unit">&nbsp;₽</span></div>
+												<div class="price__value price__value--old">Старая цена*<span class="price__unit">&nbsp;₽</span></div>
+												<div class="price__value">{{ i.price_rub }}<span class="price__unit">&nbsp;₽</span></div>
 											</div>
 										</div>
 										<!--todo: Если товар в корзине, добавляем класс-модификатор btn--active у кнопки -->
@@ -689,4 +690,5 @@
 					</div>
 				</section>
 			</main>
+{% endfor %}
 {% endblock %}

@@ -62,8 +62,8 @@
                                     {% csrf_token %}
                                     <select class="tabs-select form-select form-select--size_small js-form-select"
                                             name="select">
-                                        <option value="1">Цена по возрастанию</option>
-                                        <option value="2">Цена по убыванию</option>
+                                        <option value="1">Цена по убыванию</option>
+                                        <option value="2">Цена по возрастанию</option>
                                     </select>
                                     <button type="submit">submit</button>
                                 </form>
@@ -78,7 +78,7 @@
 
                                     <div class="catalog-list__col">
                                         <div class="c-card c-card--model">
-                                            <a class="c-card__img-wrap" href="catalog-item.html">
+                                            <a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
                                                 <div class="c-card__img-ratio">
                                                     <picture>
                                                         <source media="(min-width: 2560px)"

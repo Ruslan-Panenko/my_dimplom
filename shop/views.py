@@ -69,9 +69,11 @@ def subcategory_view(request, category_slug, subcategory_slug):
 def item_view(request, category_slug, subcategory_slug, item_slug):
 	subcategory_item = subcategory.objects.filter(slug=subcategory_slug).first()
 	get_object_or_404(item, slug=item_slug, category=subcategory_item)
+	current_item = item.objects.filter(slug=item_slug)
 	content = {
 		'category_slug': category_slug,
 		'subcategory_slug': subcategory_slug,
-		'item_slug': item_slug
+		'item_slug': item_slug,
+		'current_item': current_item,
 	}
 	return render(request, 'catalog-item.html', content)
