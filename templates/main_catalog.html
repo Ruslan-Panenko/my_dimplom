@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="page__main">
+				<h1 class="visuallyhidden">Каталог</h1>
+				<section class="section section--top">
+					<div class="section__container">
+						<div class="section__row">
+							<div class="section__col">
+								<div class="c-filter">
+									<div class="c-filter__row">
+										<div class="c-filter__products">
+											<div class="tabs js-tabs">
+												<div class="tabs__select">
+													<select class="tabs-select form-select c-filter__tabs-select js-form-select js-tabs-select-trigger">
+														<option value="tab-1">Наборы для склейки</option>
+														<option value="tab-2">Чертежи для бумаги</option>
+														<option value="tab-3">Готовые фигуры</option>
+														<option value="tab-4">Чертежи для металла</option>
+													</select>
+												</div>
+												<div class="tabs__list">
+													<ul class="tabs-list c-filter__tabs-list">
+
+														{% for category in all_categories %}
+														<a href="../../{{ category.slug }}">
+														{% if category.title == current_category.title %}
+															<li class="tabs-list__item js-tabs-trigger tabs-list__item--active" data-tab="tab-1">{{ category.title }}</li></a>
+														{% else%}
+														<li class="tabs-list__item js-tabs-trigger" data-tab="tab-1">{{ category.title }}</li></a>
+
+														{% endif %}
+														{% endfor %}
+
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="c-filter__row">
+										<div class="c-filter__types">
+											<ul class="filter-list">
+												<li class="filter-list__item"><a href="/{{ i.category.slug }}" style="color: black">Все</a></li>
+												{% for i in current_subcategories %}
+												{% if i.title == current_subcategory.title %}
+													<li class="filter-list__item filter-list__item--active" style="color: blue"><a href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
+												{% else %}
+													<li class="filter-list__item"><a href="/{{ i.category.slug }}/{{ i.slug }}" style="color: black">{{ i.title }}</a></li>
+												{% endif %}
+												{% endfor %}
+
+											</ul>
+										</div>
+										<div class="c-filter__price">
+											<form action="" method="POST">
+												{% csrf_token %}
+												<select class="tabs-select form-select form-select--size_small js-form-select" name="select">
+													<option value="1">Цена по убыванию</option>
+													<option value="2">Цена по возрастанию</option>
+												</select>
+												<button type="submit">submit</button>
+											</form>
+										</div>
+									</div>
+									<div class="tabs-content c-filter__tabs-content tabs-content--active" data-tab-content="tab-1">
+										<div class="catalog-list">
+											<div class="catalog-list__row">
+
+
+                                                {% block category %}
+                                                {% endblock %}
+
+                                            </div>
+                                        </div>
+										<div class="preloader preloader--catalog">
+											<div class="preloader__spinner"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+{% endblock %}
