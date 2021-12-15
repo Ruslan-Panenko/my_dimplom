@@ -27,11 +27,17 @@ def category_view(request, category_slug):
 	current_category = category.objects.filter(slug=category_slug).first()
 	all_categories = category.objects.all()
 	current_subcategories = subcategory.objects.filter(category=current_category)
+	items1 = []
 	items = []
 	for current_subcategory in current_subcategories:
-		for item_object in item.objects.filter(category=current_subcategory).order_by(sort1):
-			items.append(item_object)
+		for item_object in item.objects.filter(category=current_subcategory):
 
+			items1.append(item_object)
+
+
+	for j in item.objects.order_by(sort1):
+		for i in items1:
+			if i == j: items.append(i)
 	content = {
 		'current_category': current_category,
 		'all_categories': all_categories,

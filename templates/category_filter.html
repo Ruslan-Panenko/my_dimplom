@@ -1,6 +1,28 @@
 {% extends 'main_catalog.html' %}
 {% block category %}
+												<li class="filter-list__item filter-list__item--active"><a href="/{{ current_subcategory.category.slug }}">всё</a></li>
+												{% for i in current_subcategories %}
 
+													<li class="filter-list__item"><a href="/{{ i.category.slug }}/{{ i.slug }}" style="color: black">{{ i.title }}</a></li>
+
+												{% endfor %}
+
+											</ul>
+										</div>
+										<div class="c-filter__price">
+											<form action="" method="POST">
+												{% csrf_token %}
+												<select class="tabs-select form-select form-select--size_small js-form-select" name="select">
+													<option value="1">Цена по убыванию</option>
+													<option value="2">Цена по возрастанию</option>
+												</select>
+												<button type="submit">submit</button>
+											</form>
+										</div>
+									</div>
+									<div class="tabs-content c-filter__tabs-content tabs-content--active" data-tab-content="tab-1">
+										<div class="catalog-list">
+											<div class="catalog-list__row">
 												{% for item in items %}
 												<div class="catalog-list__col">
 													<div class="c-card c-card--model">
