@@ -18,7 +18,7 @@ def order_view(request):
 		'item_list': item_list,
 		'all_categories': all_categories
 	}
-	return render(request, 'catalog.html', content)
+	return render(request, 'category.html', content)
 
 
 def category_view(request, category_slug):

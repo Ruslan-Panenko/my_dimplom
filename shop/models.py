@@ -166,9 +166,9 @@ class item(models.Model):
 								   validators=[FileExtensionValidator(['pdf'])],
 								   help_text='Формат файла: pdf. Ограничени размера: 1 Мбайт.', blank=True)
 	bottom_text = RichTextField('Текст под нижним блоком', blank=True)
-	price_rub = models.FloatField('Цена в рублях', null=True, blank=True)
-	price_eur = models.FloatField('Цена в евро', null=True, blank=True)
-	price_usd = models.FloatField('Цена в долларах', null=True, blank=True)
+	price_rub = models.IntegerField('Цена в рублях', null=True, blank=True)
+	price_eur = models.IntegerField('Цена в евро', null=True, blank=True)
+	price_usd = models.IntegerField('Цена в долларах', null=True, blank=True)
 	weight = models.FloatField('Вес товара, кг', null=True, blank=True)
 	length = models.FloatField('Длина, мм', null=True, blank=True)
 	width = models.FloatField('Ширина, мм', null=True, blank=True)
