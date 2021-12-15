@@ -2,74 +2,49 @@ from django.shortcuts import render, get_object_or_404
 from .models import category, subcategory, item
 
 
-def sort(request):
+def main_view(request, category_slug=None, subcategory_slug=None):
 	val = request.POST.get('select')
 	if val == '1':
-		return 'price_rub'
+		sort = 'price_rub'
 	else:
-		return '-price_rub'
-
-
-def order_view(request):
-	sort1 = sort(request)
-	item_list = item.objects.order_by(sort1)
+		sort = '-price_rub'
+	all_items = item.objects.order_by(sort)
+	categories = category.objects.all()
 	all_categories = category.objects.all()
-	content = {
-		'item_list': item_list,
-		'all_categories': all_categories
-	}
-	return render(request, 'category.html', content)
-
-
-def category_view(request, category_slug):
-	get_object_or_404(category, slug=category_slug)
-	sort1 = sort(request)
 	current_category = category.objects.filter(slug=category_slug).first()
-	all_categories = category.objects.all()
 	current_subcategories = subcategory.objects.filter(category=current_category)
-	items1 = []
+	current_subcategory1 = subcategory.objects.filter(slug=subcategory_slug).first()
+
 	items = []
+	sorted_items_by_category = []
+	sorted_items_by_subcategory = []
+
+	for item_object in item.objects.filter(category=current_subcategory1).order_by(sort):
+		sorted_items_by_subcategory.append(item_object)
+
 	for current_subcategory in current_subcategories:
 		for item_object in item.objects.filter(category=current_subcategory):
-
-			items1.append(item_object)
-
-
-	for j in item.objects.order_by(sort1):
-		for i in items1:
-			if i == j: items.append(i)
-	content = {
-		'current_category': current_category,
-		'all_categories': all_categories,
-		'current_subcategories': current_subcategories,
-		'items': items,
-
-	}
-
-	return render(request, 'category_filter.html', content)
-
-
-def subcategory_view(request, category_slug, subcategory_slug):
-	sort1 = sort(request)
-	get_object_or_404(subcategory, slug=subcategory_slug)
-	current_category = category.objects.filter(slug=category_slug).first()
-	current_subcategory = subcategory.objects.filter(slug=subcategory_slug).first()
-	all_categories = category.objects.all()
-	current_subcategories = subcategory.objects.filter(category=current_category)
-	items = []
-	for item_object in item.objects.filter(category=current_subcategory).order_by(sort1):
-		items.append(item_object)
+			items.append(item_object)
+	for j in all_items:
+		for i in items:
+			if i == j:
+				sorted_items_by_category.append(i)
 
 	content = {
-		'current_subcategories': current_subcategories,
+		'categories': categories,
 		'all_categories': all_categories,
 		'current_category': current_category,
-		'current_subcategory': current_subcategory,
+		'current_subcategories': current_subcategories,
+		'current_subcategory': current_subcategory1,
+		'all_items': all_items,
 		'items': items,
+		'sorted_items_by_category': sorted_items_by_category,
+		'sorted_items_by_subcategory': sorted_items_by_subcategory,
+
+
 
 	}
-
-	return render(request, 'subcategory_filter.html', content)
+	return render(request, 'main_catalog.html', content)
 
 
 def item_view(request, category_slug, subcategory_slug, item_slug):
