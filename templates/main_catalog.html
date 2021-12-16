@@ -22,6 +22,10 @@
 												<div class="tabs__list">
 													<ul class="tabs-list c-filter__tabs-list">
 
+														<!--  Вывод категорий -->
+
+
+
 														{% for category in all_categories %}
 														<a href="../../{{ category.slug }}">
 														{% if category.title == current_category.title %}
@@ -40,7 +44,10 @@
 									<div class="c-filter__row">
 										<div class="c-filter__types">
 											<ul class="filter-list">
+												<!--  Вывод подкатегорий -->
 
+
+												<!--  для подкатегорий -->
 											{% if current_category and current_subcategory %}
 												 <li class="filter-list__item" ><a style="color: black" href="/{{ current_subcategory.category.slug }}">всё</a></li>
                                                 {% for i in current_subcategories %}
@@ -51,6 +58,7 @@
 												{% endif %}
 												{% endfor %}
 
+												<!--  для категорий -->
 											{% elif current_category %}
 												<li class="filter-list__item filter-list__item--active"><a href="/{{ current_category.slug }}">всё</a></li>
 												{% for i in current_subcategories %}
@@ -59,6 +67,7 @@
 												{% endfor %}
 
 											{% else %}
+												<!--  для всех товаров -->
 
 											{% endif %}
 
@@ -81,10 +90,11 @@
 									<div class="tabs-content c-filter__tabs-content tabs-content--active" data-tab-content="tab-1">
 										<div class="catalog-list">
 											<div class="catalog-list__row">
+												<!-- Вывод товаров -->
 
 
 
-
+												<!-- Для подкатегорий -->
 												{% if  current_category and current_subcategory %}
 													{% for item in sorted_items_by_subcategory %}
 													<div class="catalog-list__col">
@@ -135,6 +145,7 @@
 												</div>
 												{% endfor %}
 
+												<!-- Для категорий -->
 												{% elif current_category %}
 													{% for item in sorted_items_by_category %}
 												<div class="catalog-list__col">
@@ -185,6 +196,8 @@
 												</div>
 												{% endfor %}
 												{% else %}
+
+												<!-- Все -->
 													{% for item in all_items %}
 												<div class="catalog-list__col">
 													<div class="c-card c-card--model">
