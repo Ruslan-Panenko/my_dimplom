@@ -3,12 +3,17 @@ from .models import category, subcategory, item
 
 
 def main_view(request, category_slug=None, subcategory_slug=None):
-	val = request.POST.get('select')
-	if val == '1':
-		sort = 'price_rub'
-	else:
-		sort = '-price_rub'
-	all_items = item.objects.order_by(sort)
+	if category_slug and subcategory_slug:
+		if get_object_or_404(category, slug=category_slug):
+			get_object_or_404(subcategory, slug=subcategory_slug)
+
+	elif category_slug:
+		get_object_or_404(category, slug=category_slug)
+
+	value = request.GET.get('select')
+	if value is None:
+		value = 'title'
+	all_items = item.objects.order_by(value)
 	categories = category.objects.all()
 	all_categories = category.objects.all()
 	current_category = category.objects.filter(slug=category_slug).first()
@@ -19,7 +24,7 @@ def main_view(request, category_slug=None, subcategory_slug=None):
 	sorted_items_by_category = []
 	sorted_items_by_subcategory = []
 
-	for item_object in item.objects.filter(category=current_subcategory1).order_by(sort):
+	for item_object in item.objects.filter(category=current_subcategory1).order_by(value):
 		sorted_items_by_subcategory.append(item_object)
 
 	for current_subcategory in current_subcategories:
@@ -31,6 +36,7 @@ def main_view(request, category_slug=None, subcategory_slug=None):
 				sorted_items_by_category.append(i)
 
 	content = {
+		'value': value,
 		'categories': categories,
 		'all_categories': all_categories,
 		'current_category': current_category,
@@ -48,6 +54,9 @@ def main_view(request, category_slug=None, subcategory_slug=None):
 
 
 def item_view(request, category_slug, subcategory_slug, item_slug):
+	if category_slug and subcategory_slug:
+		if get_object_or_404(category, slug=category_slug):
+			get_object_or_404(subcategory, slug=subcategory_slug)
 	subcategory_item = subcategory.objects.filter(slug=subcategory_slug).first()
 	get_object_or_404(item, slug=item_slug, category=subcategory_item)
 	current_item = item.objects.filter(slug=item_slug)
