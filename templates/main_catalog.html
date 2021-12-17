@@ -50,20 +50,21 @@
 
 												<!--  для подкатегорий -->
 											{% if current_category and current_subcategory %}
-												 <li class="filter-list__item" ><a href="/{{ current_subcategory.category.slug }}">всё</a></li>
+												 <li class="filter-list__item" ><a style="color: black;" href="/{{ current_subcategory.category.slug }}">всё</a></li>
                                                 {% for i in current_subcategories %}
 												{% if i.title == current_subcategory.title %}
-													<li class="filter-list__item filter-list__item--active" ><a href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
+
+													<li class="filter-list__item" ><a style="color: #006ec8; href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
 												{% else %}
-													<li class="filter-list__item"><a href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
+													<li class="filter-list__item"><a style="color: black;" href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
 												{% endif %}
 												{% endfor %}
 
 												<!--  для категорий -->
 											{% elif current_category %}
-												<li class="filter-list__item filter-list__item--active"><a href="/{{ current_category.slug }}">всё</a></li>
+												<li class="filter-list__item"><a style="color: #006ec8;" href="/{{ current_category.slug }}">всё</a></li>
 												{% for i in current_subcategories %}
-													<li class="filter-list__item"><a href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
+													<li class="filter-list__item"><a style="color: black;" class="filter-list__item-link" href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
 
 												{% endfor %}
 
@@ -84,6 +85,7 @@
 													<option value="-price_rub" {% if value == '-price_rub' %} selected {% endif %}>Цена по возрастанию</option>
 													<option value="title" {% if value == 'title' %} selected {% endif %}>По алфавиту</option>
 													<option value="difficulty" {% if value == 'difficulty' %} selected {% endif %}>По сложности</option>
+													<option value="difficulty" {% if value == 'difficulty' %} selected {% endif %}>По популярности</option>
 												</select>
 											</form>
 										</div>
