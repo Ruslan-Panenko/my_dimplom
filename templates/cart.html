@@ -65,6 +65,7 @@
 												<div class="cart__footer-title">Всього</div>
                                                 <hr style="width: 100% ">
 												<div class="input-wrap cart__input-wrap">
+                                                    <h3>Купон</h3>
                                                     <form action="{% url "coupons:apply" %}" method="post">
                                                         {{ coupon_apply_form.as_p }}
                                                         {% csrf_token %}
