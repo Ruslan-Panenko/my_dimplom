@@ -28,7 +28,7 @@ SECRET_KEY = 'rtk+wk*(rsa*yvz1$j4qclm8j&fwh^c5i)#_*wvsq96fh$u#r^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
