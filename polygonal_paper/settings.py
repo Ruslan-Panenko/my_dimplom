@@ -99,7 +99,7 @@ DATABASES = {
         'NAME': 'shop',
         'USER': 'shop_user',
         'PASSWORD': 'admin',
-        'HOST': '*',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
