@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 """
 Django settings for polygonal_paper project.
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'cart',
     'sale',
     'order',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'polygonal_paper.urls'
@@ -173,3 +177,8 @@ CKEDITOR_CONFIGS = {
 
 CART_SESSION_ID = 'cart'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
