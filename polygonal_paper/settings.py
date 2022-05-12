@@ -89,12 +89,6 @@ WSGI_APPLICATION = 'polygonal_paper.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-import dj_database_url
-
-db_from_env = dj_database_url.config()
-DATABASE['default'].update(db_from_env)
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
