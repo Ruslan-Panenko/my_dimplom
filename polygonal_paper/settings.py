@@ -88,6 +88,13 @@ WSGI_APPLICATION = 'polygonal_paper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
+import dj_database_url
+
+db_from_env = dj_database_url.config()
+DATABASE['default'].update(db_from_env)
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -171,3 +178,7 @@ CKEDITOR_CONFIGS = {
 }
 
 CART_SESSION_ID = 'cart'
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+
