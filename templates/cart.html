@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load shop_tags %}
+
+{% block content %}
+
+<h1>Кошик</h1>
+<ul class="cart__list", style="padding: 5px">
+ {% for item in cart %}
+        {% with product=item.product %}
+
+                                            <li class="cart__item">
+												<div class="cart__item-inner">
+													<div class="cart__col-img">
+
+
+													<a class="c-card__img-wrap" href="{{ product.get_absolute_url }}">
+															<div class="c-card__img-ratio">
+																	<img class="c-card__img" src="{{ product.main_photo_xxl2.url }}" >
+															</div>
+														</a>
+													</div>
+													<div class="cart__col-desc">
+                                                        <a href="{{ product.get_absolute_url }}">
+														<h2 class="cart__title" style="text-align: center">
+															{{ product.title }}
+														</h2>
+                                                        </a>
+													</div>
+													<div class="cart__col-price">
+														<div class="price price--theme_black price--cart">
+															<div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
+														</div>
+													</div>
+													<div class="cart__col-counter">
+                                                            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                            {{ item.update_quantity_form.quantity }}
+                                                            {{ item.update_quantity_form.override }}
+                                                            <input type="submit" value="Оновити">
+                                                            {% csrf_token %}
+                                                          </form>
+
+													</div>
+													<div class="cart__col-total">
+														<div class="price price--cart">
+															<div class="price__value"><span class="js-sub-total">{{ item.total_price|shop_tags }}</span><span class="price__unit">&nbsp;₴</span></div>
+														</div>
+													</div>
+
+													<div class="cart__col-remove">
+                                                        <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                                                            {% csrf_token %}
+                                                                 <input type="submit" value="Видалити">
+                                                        </form>
+													</div>
+												</div>
+											</li>
+
+
+        {% endwith %}
+      {% endfor %}
+</ul>
+
+    <div class="cart__footer">
+											<div class="cart__footer-total">
+												<div class="cart__footer-title">Всього</div>
+                                                <hr style="width: 100% ">
+												<div class="input-wrap cart__input-wrap">
+                                                    <form action="{% url "coupons:apply" %}" method="post">
+                                                        {{ coupon_apply_form.as_p }}
+                                                        {% csrf_token %}
+													<input class="form-input cart__form-input" type="submit" value="Застосувати купон">
+                                                    </form>
+                                                </div>
+											</div>
+											<div class="cart__footer-price">
+												<div class="price">
+													<div class="price__value">
+                                                        {% if cart.coupon %}
+                                                        <span style="text-decoration: line-through; color: grey">{{ cart.get_total_price|shop_tags }}</span>
+                                                        {% endif %}
+                                                        <span>{{ cart.get_total_price_after_discount|shop_tags }}</span>
+                                                        <span class="price__unit">&nbsp;₴</span>
+
+													</div>
+												</div>
+											</div>
+											<div class="cart__footer-btn">
+                                                <a href="/order">
+												<button href="/order" class="btn cart__btn" type="submit">Оформити замовлення</button>
+                                                    </a>
+											</div>
+										</div>
+
+{% endblock %}

@@ -14,10 +14,10 @@
 											<div class="tabs js-tabs">
 												<div class="tabs__select">
 													<select class="tabs-select form-select c-filter__tabs-select js-form-select js-tabs-select-trigger">
-														<option value="tab-1">Наборы для склейки</option>
-														<option value="tab-2">Чертежи для бумаги</option>
-														<option value="tab-3">Готовые фигуры</option>
-														<option value="tab-4">Чертежи для металла</option>
+
+                                                        {% for category in all_categories %}
+                                                        <option value="tab-1">{{ category.title }}</option>
+														{% endfor %}
 													</select>
 												</div>
 												<div class="tabs__list">
@@ -62,7 +62,7 @@
 
 												<!--  для категорий -->
 											{% elif current_category %}
-												<li class="filter-list__item"><a style="color: #006ec8;" href="/{{ current_category.slug }}">всё</a></li>
+												<li class="filter-list__item"><a style="color: #006ec8;" href="/{{ current_category.slug }}">Усi</a></li>
 												{% for i in current_subcategories %}
 													<li class="filter-list__item"><a style="color: black;" class="filter-list__item-link" href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
 
@@ -81,11 +81,10 @@
 										<div class="c-filter__price">
 											<form action="" method="GET">
 												<select class="tabs-select form-select form-select--size_small js-form-select" name="select" onchange="this.form.submit()">
-													<option value="price_rub" {% if value == 'price_rub' %} selected {% endif %} >Цена по убыванию</option>
-													<option value="-price_rub" {% if value == '-price_rub' %} selected {% endif %}>Цена по возрастанию</option>
-													<option value="title" {% if value == 'title' %} selected {% endif %}>По алфавиту</option>
-													<option value="difficulty" {% if value == 'difficulty' %} selected {% endif %}>По сложности</option>
-													<option value="difficulty" {% if value == 'difficulty' %} selected {% endif %}>По популярности</option>
+													<option value="price" {% if value == 'price' %} selected {% endif %} >Ціна за спаданням</option>
+													<option value="-price" {% if value == '-price' %} selected {% endif %}>Ціна за зростанням</option>
+													<option value="title" {% if value == 'title' %} selected {% endif %}>За алфавітом</option>
+
 												</select>
 											</form>
 										</div>
@@ -105,43 +104,23 @@
 													<div class="c-card c-card--model">
 														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
 															<div class="c-card__img-ratio">
-																<picture>
-																	<source media="(min-width: 2560px)" srcset="{{ item.main_photo_xxl.url }} 1x, {{ item.main_photo_xxl2.url }} 2x">
-																	<img class="c-card__img" src="{{ item.main_photo_xs.url }}" srcset="{{ item.main_photo_xs2.url }} 2x" width="728" height="546" alt="">
-																</picture>
+																<img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
 															</div>
 														</a>
 														<div class="c-card__content">
 															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="catalog-item.html">{{ item.title }}</a>
+																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
 															</h3>
 															<div class="c-card__footer">
 																<div class="price price--c-card">
-																	<div class="price__value price__value--old">2&nbsp;700<span class="price__unit">&nbsp;₽</span></div>
-																	<div class="price__value">{{ item.price_rub|shop_tags }}<span class="price__unit">&nbsp;₽</span></div>
+																	<div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
 																</div>
 																<div class="c-card__buttons">
-																	<!--todo: Если товар в сравнении, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--short btn-count--card" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 32 25" width="32" height="25">
-																				<use xlink:href="img/sprite.svg#icon-compare"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">Сравнить</span>
-																	</button>
-																	<!--todo: Если товар в корзине, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--buy btn-count--card btn-count--active" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart"></use>
-																			</svg>
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart-check"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">В корзине</span>
-																	</button>
+																	<form action="{% url "cart:cart_add" item.id %}" method="post">
+                                                                        {{ cart_product_form }}
+                                                                        {% csrf_token %}
+																		<input type="submit" value="В корзину" class="btn-count__title"></input>
+                                                                        </form>
 																</div>
 															</div>
 														</div>
@@ -149,7 +128,7 @@
 												</div>
 												{% endfor %}
 												{% else %}
-												<h1>Нет товаров</h1>
+												<h1>Немає товарів</h1>
 												{% endif %}
 
 												<!-- Для категорий -->
@@ -160,43 +139,23 @@
 													<div class="c-card c-card--model">
 														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
 															<div class="c-card__img-ratio">
-																<picture>
-																	<source media="(min-width: 2560px)" srcset="{{ item.main_photo_xxl.url }} 1x, {{ item.main_photo_xxl2.url }} 2x">
-																	<img class="c-card__img" src="{{ item.main_photo_xs.url }}" srcset="{{ item.main_photo_xs2.url }} 2x" width="728" height="546" alt="">
-																</picture>
+																	<img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
 															</div>
 														</a>
 														<div class="c-card__content">
 															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="catalog-item.html">{{ item.title }}</a>
+																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
 															</h3>
 															<div class="c-card__footer">
 																<div class="price price--c-card">
-																	<div class="price__value price__value--old">2&nbsp;700<span class="price__unit">&nbsp;₽</span></div>
-																	<div class="price__value">{{ item.price_rub|shop_tags }}<span class="price__unit">&nbsp;₽</span></div>
+																	<div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
 																</div>
 																<div class="c-card__buttons">
-																	<!--todo: Если товар в сравнении, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--short btn-count--card" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 32 25" width="32" height="25">
-																				<use xlink:href="img/sprite.svg#icon-compare"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">Сравнить</span>
-																	</button>
-																	<!--todo: Если товар в корзине, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--buy btn-count--card btn-count--active" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart"></use>
-																			</svg>
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart-check"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">В корзине</span>
-																	</button>
+																	<form action="{% url "cart:cart_add" item.id %}" method="post">
+                                                                         {{ cart_product_form }}
+                                                                        {% csrf_token %}
+																		<input type="submit" value="До кошика" class="btn-count__title"></input>
+                                                                        </form>
 																</div>
 															</div>
 														</div>
@@ -204,7 +163,7 @@
 												</div>
 												{% endfor %}
 												{% else %}
-												<h1>Нет товаров</h1>
+												<h1>Немає товарів</h1>
 												{% endif %}
 												{% else %}
 
@@ -216,43 +175,25 @@
 													<div class="c-card c-card--model">
 														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
 															<div class="c-card__img-ratio">
-																<picture>
-																	<source media="(min-width: 2560px)" srcset="{{ item.main_photo_xxl.url }} 1x, {{ item.main_photo_xxl2.url }} 2x">
-																	<img class="c-card__img" src="{{ item.main_photo_xs.url }}" srcset="{{ item.main_photo_xs2.url }} 2x" width="728" height="546" alt="">
-																</picture>
+                                                                <img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
 															</div>
 														</a>
 														<div class="c-card__content">
 															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="catalog-item.html">{{ item.title }}</a>
+																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
 															</h3>
 															<div class="c-card__footer">
 																<div class="price price--c-card">
-																	<div class="price__value price__value--old">2&nbsp;700<span class="price__unit">&nbsp;₽</span></div>
-																	<div class="price__value">{{ item.price_rub|shop_tags }}<span class="price__unit">&nbsp;₽</span></div>
+
+                                                                    <div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
 																</div>
 																<div class="c-card__buttons">
-																	<!--todo: Если товар в сравнении, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--short btn-count--card" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 32 25" width="32" height="25">
-																				<use xlink:href="img/sprite.svg#icon-compare"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">Сравнить</span>
-																	</button>
-																	<!--todo: Если товар в корзине, добавляем класс-модификатор btn-count--active у кнопки -->
-																	<button class="btn-count btn-count--buy btn-count--card btn-count--active" type="button">
-																		<div class="btn-count__icon-wrap">
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart"></use>
-																			</svg>
-																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">
-																				<use xlink:href="img/sprite.svg#icon-btn-cart-check"></use>
-																			</svg>
-																		</div>
-																		<span class="btn-count__title">В корзине</span>
-																	</button>
+                                                                    <form action="{% url "cart:cart_add" item.id %}" method="post">
+                                                                        {{ cart_product_form }}
+                                                                        {% csrf_token %}
+																		<input type="submit" value="До кошика" class="btn-count__title">
+                                                                        </form>
+
 																</div>
 															</div>
 														</div>
@@ -260,7 +201,7 @@
 												</div>
 												{% endfor %}
 												{% else %}
-												<h1>Нет товаров</h1>
+												<h1>Немає товарів</h1>
 												{% endif %}
 												{% endif %}
                                             </div>
@@ -269,8 +210,26 @@
 								</div>
 							</div>
 						</div>
+
+
+
+
+
 					</div>
 				</section>
 			</main>
+
 		</div>
 {% endblock %}
+
+
+{##}
+{#<button class="btn-count btn-count--buy btn-count--card btn-count--active" type="button">#}
+{#																		<div class="btn-count__icon-wrap">#}
+{#																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">#}
+{#																				<use xlink:href="img/sprite.svg#icon-btn-cart"></use>#}
+{#																			</svg>#}
+{#																			<svg class="btn-count__icon" viewBox="0 0 22 19" width="22" height="19">#}
+{#																				<use xlink:href="img/sprite.svg#icon-btn-cart-check"></use>#}
+{#																			</svg>#}
+{#																		</div>#}

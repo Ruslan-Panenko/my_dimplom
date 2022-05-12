@@ -46,10 +46,12 @@ INSTALLED_APPS = [
     'adminsortable2',
     'django_unused_media',
     'shop.apps.ShopConfig',
+    'cart',
+    'sale',
+    'order',
 ]
 
 MIDDLEWARE = [
-    'polygonal_paper.middleware.ForceInEnglish',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -73,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context.cart',
             ],
         },
     },
@@ -86,8 +89,12 @@ WSGI_APPLICATION = 'polygonal_paper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'shop',
+        'USER': 'shop_user',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -114,9 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -145,10 +152,8 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 gettext = lambda s: s
 
 LANGUAGES = (
-    ('ru', gettext('Russian')),
     ('en', gettext('English')),
-    ('fr', gettext('French')),
-)
+    )
 
 MODELTRANSLATION_LANGUAGES = ('ru', 'en', 'fr')
 
@@ -163,3 +168,5 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
+
+CART_SESSION_ID = 'cart'
