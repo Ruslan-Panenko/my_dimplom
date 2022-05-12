@@ -1,0 +1,1 @@
+web: gunicorn polygonal_paper.wsgi --log-file -
