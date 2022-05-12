@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% load shop_tags %}
 {% block content %}
+
+    <style>
+    .g-slider__img {
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    </style>
 {% for i in current_item %}
 			<main class="page__main">
 				<div class="breadcrumbs">
