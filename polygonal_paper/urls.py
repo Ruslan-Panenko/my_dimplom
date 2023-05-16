@@ -5,6 +5,7 @@ from django.conf import settings
 
 from sale import views
 
+
 urlpatterns = [
                   path('about/', views.about),
                   path('delivery/', views.delivery),

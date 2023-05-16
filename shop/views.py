@@ -1,6 +1,9 @@
+import uuid
+
 from django.shortcuts import render, get_object_or_404
 from .models import category, subcategory, item
 from cart.forms import CartAddProductForm
+import csv
 
 def main_view(request, category_slug=None, subcategory_slug=None):
 	current_page = 'shop'

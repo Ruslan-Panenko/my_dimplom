@@ -1,255 +1,291 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-{% load shop_tags %}
+    {% load shop_tags %}
 
     <style>
-    ul {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-    }
-    .c-card__img{
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .c-card__img-wrap:hover .c-card__img{
-        transform: scale(1.08) translateX(-50%);
-    }
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
 
-    @media screen and (max-width: 768px) {
-               .products-list {
-                    grid-template-columns: repeat(2, 1fr);
-               }
-    }
+        .c-card__img {
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    @media screen and (max-width: 576px) {
-                .products-list {
-                    display: block;
-                    grid-template-columns: repeat(1, 1fr);
-                }
-    }
-    .products-list__item {}
+        .c-card__img-wrap:hover .c-card__img {
+            transform: scale(1.08) translateX(-50%);
+        }
+
+        @media screen and (max-width: 768px) {
+            .products-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .products-list {
+                display: block;
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+
     </style>
 
-<main class="page__main">
-				<h1 class="visuallyhidden">Каталог</h1>
-				<section class="section section--top">
-					<div class="section__container">
-						<div class="section__row">
-							<div class="section__col">
-								<div class="c-filter">
-									<div class="c-filter__row">
-										<div class="c-filter__products">
-											<div class="tabs js-tabs">
-												<div class="tabs__select">
-													<select class="tabs-select form-select c-filter__tabs-select js-form-select js-tabs-select-trigger">
+    <main class="page__main">
+        <h1 class="visuallyhidden">Каталог</h1>
+        <section class="section section--top">
+            <div class="section__container">
+                <div class="section__row">
+                    <div class="section__col">
+                        <div class="c-filter">
+                            <div class="c-filter__row">
+                                <div class="c-filter__products">
+                                    <div class="tabs js-tabs">
+                                        <div class="tabs__select">
+                                            <select class="tabs-select form-select c-filter__tabs-select js-form-select js-tabs-select-trigger">
 
-                                                        {% for category in all_categories %}
-                                                        <option value="tab-1">{{ category.title }}</option>
-														{% endfor %}
-													</select>
-												</div>
-												<div class="tabs__list">
-													<ul class="tabs-list c-filter__tabs-list">
-
-														<!--  Вывод категорий -->
-
-
-
-														{% for category in all_categories %}
-														<a href="../../{{ category.slug }}">
-														{% if category.title == current_category.title %}
-															<li class="tabs-list__item js-tabs-trigger tabs-list__item--active" data-tab="tab-1">{{ category.title }}</li></a>
-														{% else%}
-														<li class="tabs-list__item js-tabs-trigger" data-tab="tab-1">{{ category.title }}</li></a>
-
-														{% endif %}
-														{% endfor %}
-
-													</ul>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="c-filter__row">
-										<div class="c-filter__types">
-											<ul class="filter-list">
-												<!--  Вывод подкатегорий -->
-
-
-												<!--  для подкатегорий -->
-											{% if current_category and current_subcategory %}
-												 <li class="filter-list__item" ><a style="color: black;" href="/{{ current_subcategory.category.slug }}">всё</a></li>
-                                                {% for i in current_subcategories %}
-												{% if i.title == current_subcategory.title %}
-
-													<li class="filter-list__item" ><a style="color: #006ec8; href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
-												{% else %}
-													<li class="filter-list__item"><a style="color: black;" href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
-												{% endif %}
-												{% endfor %}
-
-												<!--  для категорий -->
-											{% elif current_category %}
-												<li class="filter-list__item"><a style="color: #006ec8;" href="/{{ current_category.slug }}">Усi</a></li>
-												{% for i in current_subcategories %}
-													<li class="filter-list__item"><a style="color: black;" class="filter-list__item-link" href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a></li>
-
-												{% endfor %}
-
-											{% else %}
-												<!--  для всех товаров -->
-
-											{% endif %}
-
-
-
-
-											</ul>
-										</div>
-										<div class="c-filter__price">
-											<form action="" method="GET">
-												<select class="tabs-select form-select form-select--size_small js-form-select" name="select" onchange="this.form.submit()">
-													<option value="price" {% if value == 'price' %} selected {% endif %} >Ціна за спаданням</option>
-													<option value="-price" {% if value == '-price' %} selected {% endif %}>Ціна за зростанням</option>
-													<option value="title" {% if value == 'title' %} selected {% endif %}>За алфавітом</option>
-
-												</select>
-											</form>
-										</div>
-									</div>
-									<div class="tabs-content c-filter__tabs-content tabs-content--active" data-tab-content="tab-1">
-										<div class="catalog-list">
-											<div class="catalog-list__row">
-												<!-- Вывод товаров -->
-
-
-
-												<!-- Для подкатегорий -->
-												{% if  current_category and current_subcategory %}
-													{% if sorted_items_by_subcategory %}
-													{% for item in sorted_items_by_subcategory %}
-													<div class="catalog-list__col">
-													<div class="c-card c-card--model">
-														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
-															<div class="c-card__img-ratio">
-																<img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
-															</div>
-														</a>
-														<div class="c-card__content">
-															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
-															</h3>
-															<div class="c-card__footer">
-																<div class="price price--c-card">
-																	<div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
-																</div>
-																<div class="c-card__buttons">
-																	<form action="{% url "cart:cart_add" item.id %}" method="post">
-                                                                        {{ cart_product_form }}
-                                                                        {% csrf_token %}
-																		<input type="submit" value="В корзину" class="btn-count__title"></input>
-                                                                        </form>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												{% endfor %}
-												{% else %}
-												<h1>Немає товарів</h1>
-												{% endif %}
-
-												<!-- Для категорий -->
-												{% elif current_category %}
-													{% if sorted_items_by_category %}
-													{% for item in sorted_items_by_category %}
-												<div class="catalog-list__col">
-													<div class="c-card c-card--model">
-														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
-															<div class="c-card__img-ratio">
-																	<img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
-															</div>
-														</a>
-														<div class="c-card__content">
-															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
-															</h3>
-															<div class="c-card__footer">
-																<div class="price price--c-card">
-																	<div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
-																</div>
-																<div class="c-card__buttons">
-																	<form action="{% url "cart:cart_add" item.id %}" method="post">
-                                                                         {{ cart_product_form }}
-                                                                        {% csrf_token %}
-																		<input type="submit" value="До кошика" class="btn-count__title"></input>
-                                                                        </form>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												{% endfor %}
-												{% else %}
-												<h1>Немає товарів</h1>
-												{% endif %}
-												{% else %}
-
-												<!-- Все -->
-												{% if all_items %}
-												{% for item in all_items %}
-
-												<div class="catalog-list__col">
-													<div class="c-card c-card--model">
-														<a class="c-card__img-wrap" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
-															<div class="c-card__img-ratio">
-                                                                <img class="c-card__img" src="{{ item.main_photo_xxl2.url }}" >
-															</div>
-														</a>
-														<div class="c-card__content">
-															<h3 class="c-card__title">
-																<a class="c-card__title-link" href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
-															</h3>
-															<div class="c-card__footer">
-																<div class="price price--c-card">
-
-                                                                    <div class="price__value">{{ item.price|shop_tags }}<span class="price__unit">&nbsp;₴</span></div>
-																</div>
-																<div class="c-card__buttons">
-                                                                    <form action="{% url "cart:cart_add" item.id %}" method="post">
-                                                                        {{ cart_product_form }}
-                                                                        {% csrf_token %}
-																		<input type="submit" value="До кошика" class="btn-count__title">
-                                                                        </form>
-
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												{% endfor %}
-												{% else %}
-												<h1>Немає товарів</h1>
-												{% endif %}
-												{% endif %}
-                                            </div>
+                                                {% for category in all_categories %}
+                                                    <option value="tab-1">{{ category.title }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
-									</div>
-								</div>
-							</div>
-						</div>
+                                        <div class="tabs__list">
+                                            <ul class="tabs-list c-filter__tabs-list">
+
+                                                <!--  Вывод категорий -->
 
 
 
+                                                {% for category in all_categories %}
+                                                    <a href="../../{{ category.slug }}">
+                                                        {% if category.title == current_category.title %}
+                                                            <li class="tabs-list__item js-tabs-trigger tabs-list__item--active"
+                                                                data-tab="tab-1">{{ category.title }}</li></a>
+                                                        {% else %}
+                                                            <li class="tabs-list__item js-tabs-trigger"
+                                                                data-tab="tab-1">{{ category.title }}</li></a>
+
+                                                        {% endif %}
+                                                {% endfor %}
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-filter__row">
+                                <div class="c-filter__types">
+                                    <ul class="filter-list">
+                                        <!--  Вывод подкатегорий -->
 
 
-					</div>
-				</section>
-			</main>
+                                        <!--  для подкатегорий -->
+                                        {% if current_category and current_subcategory %}
+                                            <li class="filter-list__item"><a style="color: #fff;"
+                                                                             href="/{{ current_subcategory.category.slug }}">УСI</a>
+                                            </li>
+                                            {% for i in current_subcategories %}
+                                                {% if i.title == current_subcategory.title %}
 
-		</div>
+                                                    <li class="filter-list__item"><a
+                                                            style="color: #A5D300; href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="filter-list__item"><a style="color: #fff;"
+                                                                                     href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            <!--  для категорий -->
+                                        {% elif current_category %}
+                                            <li class="filter-list__item"><a style="color: #A5D300;"
+                                                                             href="/{{ current_category.slug }}">Усi</a>
+                                            </li>
+                                            {% for i in current_subcategories %}
+                                                <li class="filter-list__item"><a style="color: #fff;"
+                                                                                 class="filter-list__item-link"
+                                                                                 href="/{{ i.category.slug }}/{{ i.slug }}">{{ i.title }}</a>
+                                                </li>
+
+                                            {% endfor %}
+
+                                        {% else %}
+                                            <!--  для всех товаров -->
+
+                                        {% endif %}
+
+
+                                    </ul>
+                                </div>
+                                <div class="c-filter__price">
+                                    <form action="" method="GET">
+                                        <select class="tabs-select form-select form-select--size_small js-form-select"
+                                                name="select" onchange="this.form.submit()">
+                                            <option value="price" {% if value == 'price' %} selected {% endif %} >Ціна
+                                                за зростанням
+                                            </option>
+                                            <option value="-price" {% if value == '-price' %} selected {% endif %}>Ціна
+                                                за спаданням
+                                            </option>
+                                            <option value="title" {% if value == 'title' %} selected {% endif %}>За
+                                                алфавітом
+                                            </option>
+
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="tabs-content c-filter__tabs-content tabs-content--active"
+                                 data-tab-content="tab-1">
+                                <div class="catalog-list">
+                                    <div class="catalog-list__row">
+                                        <!-- Вывод товаров -->
+
+
+                                        <!-- Для подкатегорий -->
+                                        {% if  current_category and current_subcategory %}
+                                            {% if sorted_items_by_subcategory %}
+                                                {% for item in sorted_items_by_subcategory %}
+                                                    <div class="catalog-list__col">
+                                                        <div class="c-card c-card--model">
+                                                            <a class="c-card__img-wrap"
+                                                               href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
+                                                                <div class="c-card__img-ratio">
+                                                                    <img class="c-card__img"
+                                                                         src="{{ item.main_photo_xxl2 }}">
+                                                                </div>
+                                                            </a>
+                                                            <div class="c-card__content">
+                                                                <h3 class="c-card__title">
+                                                                    <a class="c-card__title-link"
+                                                                       href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
+                                                                </h3>
+                                                                <div class="c-card__footer">
+                                                                    <div class="price price--c-card">
+                                                                        <div class="price__value">{{ item.price|shop_tags }}<span
+                                                                                class="price__unit">&nbsp;₴</span></div>
+                                                                    </div>
+                                                                    <div class="c-card__buttons">
+                                                                        <form action="{% url "cart:cart_add" item.id %}"
+                                                                              method="post">
+                                                                            {{ cart_product_form }}
+                                                                            {% csrf_token %}
+                                                                            <input type="submit" value="В корзину"
+                                                                                   class="btn-count__title"></input>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <h1>Немає товарів</h1>
+                                            {% endif %}
+
+                                            <!-- Для категорий -->
+                                        {% elif current_category %}
+                                            {% if sorted_items_by_category %}
+                                                {% for item in sorted_items_by_category %}
+                                                    <div class="catalog-list__col">
+                                                        <div class="c-card c-card--model">
+                                                            <a class="c-card__img-wrap"
+                                                               href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
+                                                                <div class="c-card__img-ratio">
+                                                                    <img class="c-card__img"
+                                                                         src="{{ item.main_photo_xxl2 }}">
+                                                                </div>
+                                                            </a>
+                                                            <div class="c-card__content">
+                                                                <h3 class="c-card__title">
+                                                                    <a class="c-card__title-link"
+                                                                       href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
+                                                                </h3>
+                                                                <div class="c-card__footer">
+                                                                    <div class="price price--c-card">
+                                                                        <div class="price__value">{{ item.price|shop_tags }}<span
+                                                                                class="price__unit">&nbsp;₴</span></div>
+                                                                    </div>
+                                                                    <div class="c-card__buttons">
+                                                                        <form action="{% url "cart:cart_add" item.id %}"
+                                                                              method="post">
+                                                                            {{ cart_product_form }}
+                                                                            {% csrf_token %}
+                                                                            <input type="submit" value="До кошика"
+                                                                                   class="btn-count__title"></input>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <h1>Немає товарів</h1>
+                                            {% endif %}
+                                        {% else %}
+
+                                            <!-- Все -->
+                                            {% if all_items %}
+                                                {% for item in all_items %}
+
+                                                    <div class="catalog-list__col">
+                                                        <div class="c-card c-card--model">
+                                                            <a class="c-card__img-wrap"
+                                                               href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">
+                                                                <div class="c-card__img-ratio">
+                                                                    <img class="c-card__img"
+                                                                         src="{{ item.main_photo_xxl2 }}">
+                                                                </div>
+                                                            </a>
+                                                            <div class="c-card__content">
+                                                                <h3 class="c-card__title">
+                                                                    <a class="c-card__title-link"
+                                                                       href="/{{ item.category.category.slug }}/{{ item.category.slug }}/{{ item.slug }}">{{ item.title }}</a>
+                                                                </h3>
+                                                                <div class="c-card__footer">
+                                                                    <div class="price price--c-card">
+
+                                                                        <div class="price__value">{{ item.price|shop_tags }}<span
+                                                                                class="price__unit">&nbsp;₴</span></div>
+                                                                    </div>
+                                                                    <div class="c-card__buttons">
+                                                                        <form action="{% url "cart:cart_add" item.id %}"
+                                                                              method="post">
+                                                                            {{ cart_product_form }}
+                                                                            {% csrf_token %}
+                                                                            <input type="submit" value="До кошика"
+                                                                                   class="btn-count__title">
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <h1>Немає товарів</h1>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+    </main>
+
+    </div>
 {% endblock %}
 
 
