@@ -15,6 +15,7 @@ from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 
 
 class subcategory_admin(SortableAdminMixin, TranslationAdmin):
+	list_display = ['id', 'title']
 	save_as = True
 	save_on_top = True
 	prepopulated_fields = {'slug': ('title',)}
