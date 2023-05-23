@@ -12,8 +12,8 @@
     <meta property="og:title" content="">
     <meta property="og:description" content="">
     <meta property="og:image" content="{% static 'img/og-img.jpg' %}">
-    <meta name="title" content="PackIT">
-    <title>PackIT</title>
+    <meta name="title" content="SCPShop">
+    <title>SCPShop</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
@@ -117,14 +117,23 @@
             display: none;
         }
 
-        .page-header__nav-link--active {
-            color: #A5D300;
-        }
 
         .page-header__nav-link:hover {
             color: #fff;
         }
+        .page-header__nav-link{
+            color: #aeaeae;
+        }
 
+        .page-header__nav-link--active {
+            color: #A5D300!important;
+        }
+        .price--theme_black .price__value{
+            color: #fff
+        }
+        .order-list__title-link{
+                color: #A5D300;
+        }
         .c-card--model .c-card__content {
             background-color: #000;
         }
@@ -499,7 +508,7 @@
             <div class="page-footer__container">
                 <div class="page-footer__row">
                     <div class="page-footer__copyright">
-                        <p>&copy;&nbsp;PackIT, 2022</p>
+                        <p>&copy;&nbsp;SCPShop, 2023</p>
                     </div>
                     <div class="page-footer__agreement">
                         <ul class="agreement-list agreement-list--footer">
