@@ -24,6 +24,7 @@ def func(request):
         new_cup.price = c[2]
         new_cup.main_photo_xxl2 = c[3]
         new_cup.category = cat
+        new_cup.order = 1
         new_cup.save()
     return 0
 
