@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from sale import views
-from shop.models import item
+from shop.models import item, subcategory
 
 
 def main(request):
@@ -16,13 +16,14 @@ def main(request):
 
 
 def func(request):
+    cat = subcategory.objects.get(id=9)
     for c in cup:
         new_cup = item()
         new_cup.title = c[0]
         new_cup.slug = c[1]
         new_cup.price = c[2]
         new_cup.main_photo_xxl2 = c[3]
-        new_cup.category__id = 9
+        new_cup.category = cat
 
 urlpatterns = [
                   path('about/', views.about),
