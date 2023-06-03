@@ -15,9 +15,18 @@ def main(request):
     return 0
 
 
+def func(request):
+    for c in cup:
+        new_cup = item()
+        new_cup.title = c[0]
+        new_cup.slug = c[1]
+        new_cup.price = c[2]
+        new_cup.main_photo_xxl2 = c[3]
+        new_cup.category__id = 9
+
 urlpatterns = [
                   path('about/', views.about),
-                  path('zxc/', main),
+                  path('zxc/', func),
                   path('delivery/', views.delivery),
                   path('contact/', views.contact),
 
