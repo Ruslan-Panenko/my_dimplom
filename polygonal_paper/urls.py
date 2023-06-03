@@ -29,6 +29,126 @@ def func(request):
             new_cup.save()
     except:
         print(1)
+    mod = subcategory.objects.get(id=8)
+    
+    try:
+        for m in model:
+            new_cup = item()
+            new_cup.title = m[0]
+            new_cup.slug = m[1]
+            new_cup.price = m[2]
+            new_cup.main_photo_xxl2 = m[3]
+            new_cup.category = mod
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_br = subcategory.objects.get(id=7)
+    
+    try:
+        for b in brelk:
+            new_cup = item()
+            new_cup.title = b[0]
+            new_cup.slug = b[1]
+            new_cup.price = b[2]
+            new_cup.main_photo_xxl2 = b[3]
+            new_cup.category = mod_br
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_chair = subcategory.objects.get(id=6)
+    
+    try:
+        for c in chairs:
+            new_cup = item()
+            new_cup.title = c[0]
+            new_cup.slug = c[1]
+            new_cup.price = c[2]
+            new_cup.main_photo_xxl2 = c[3]
+            new_cup.category = mod_chair
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_tab = subcategory.objects.get(id=5)
+    
+    try:
+        for t in tables:
+            new_cup = item()
+            new_cup.title = t[0]
+            new_cup.slug = t[1]
+            new_cup.price = t[2]
+            new_cup.main_photo_xxl2 = t[3]
+            new_cup.category = mod_tab
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_mon = subcategory.objects.get(id=4)
+    
+    try:
+        for m in monitor:
+            new_cup = item()
+            new_cup.title = m[0]
+            new_cup.slug = m[1]
+            new_cup.price = m[2]
+            new_cup.main_photo_xxl2 = m[3]
+            new_cup.category = mod_mon
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_h = subcategory.objects.get(id=3)
+    
+    try:
+        for h in headphones:
+            new_cup = item()
+            new_cup.title = h[0]
+            new_cup.slug = h[1]
+            new_cup.price = h[2]
+            new_cup.main_photo_xxl2 = h[3]
+            new_cup.category = mod_h
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+    mod_m = subcategory.objects.get(id=1)
+    
+    try:
+        for m in mouses:
+            new_cup = item()
+            new_cup.title = m[0]
+            new_cup.slug = m[1]
+            new_cup.price = m[2]
+            new_cup.main_photo_xxl2 = m[3]
+            new_cup.category = mod_m
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
+
+
+        mod_k = subcategory.objects.get(id=2)
+    
+    try:
+        for k in keyboards:
+            new_cup = item()
+            new_cup.title = k[0]
+            new_cup.slug = k[1]
+            new_cup.price = k[2]
+            new_cup.main_photo_xxl2 = k[3]
+            new_cup.category = mod_k
+            new_cup.order = 1
+            new_cup.save()
+    except:
+        print(1)
     return 0
 
 urlpatterns = [
